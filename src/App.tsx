@@ -1,122 +1,85 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+
+import { useState } from 'react';
+
+import Header from './components/layout/Header/Header';
+import Modal from './components/common/Modal/Modal';
+
+import Hero from './features/Hero/Hero';
+import Menu from './features/Menu/Menu';
+import Story from './features/Story/Story';
+import Footer from './components/layout/Footer/Footer';
+
+type ModalType = 'map' | 'newsletter' | 'article' | 'menu' | null;
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [activeModal, setActiveModal] = useState<ModalType>(null);
 
   return (
     <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
+      <Header />
+
+      <div className="hero-wrapper">
+        <Hero />
+      </div>
+
+      <main>
+        <Menu onOpenModal={setActiveModal} />
+
+        <Story onOpenModal={setActiveModal} />
+      </main>
+
+      <Footer />
+
+      <Modal
+        isOpen={activeModal !== null}
+        onClose={() => setActiveModal(null)}
+        title={
+          activeModal === 'map'
+            ? 'Find Us'
+            : activeModal === 'newsletter'
+            ? 'Newsletter'
+            : activeModal === 'article'
+            ? 'Full Article'
+            : 'Full Menu'
+        }
+      >
+        {activeModal === 'map' && (
+          <div style={{ width: '100%', aspectRatio: '16 / 9' }}>
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1615.9254597722654!2d-1.1339286902650432!3d52.63915745447631!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb7314784b68c14c0!2sUn.titled!5e0!3m2!1sen!2suk!4v1575994684235!5m2!1sen!2suk"
+              title="Restaurant location on Google Maps"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              loading="lazy"
+              allowFullScreen
+            />
+          </div>
+        )}
+
+        {activeModal === 'newsletter' && (
           <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
+            Our newsletter is coming soon! Keep an eye out for exclusive
+            offers and updates.
           </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+        )}
 
-      <div className="ticks"></div>
+        {activeModal === 'article' && (
+          <p>
+            Our full article is coming soon! Check back later for more
+            information.
+          </p>
+        )}
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
+        {activeModal === 'menu' && (
+          <p>
+            Our full menu is coming soon! Keep an eye out for our complete
+            selection.
+          </p>
+        )}
+      </Modal>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
